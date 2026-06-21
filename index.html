@@ -1,5 +1,6 @@
-<!-- ====== DEEPSOCIAL 6.0 — С ПРЕВЬЮ И ФРЕЙМАМИ ====== -->
-<!-- ====== КОД ВСТАВЛЯЕТСЯ НА ЛЮБОЙ САЙТ ====== -->
+<!-- ============================================================ -->
+<!-- ======  DEEPSOCIAL 7.0 — ФРЕЙМ ПО ССЫЛКЕ ====== -->
+<!-- ============================================================ -->
 
 <div id="deepchat-root"></div>
 
@@ -19,7 +20,6 @@
         min-height: 100vh;
     }
     
-    /* ====== ШАПКА ====== */
     #deepchat-root .dc-header {
         background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
         padding: 14px 18px;
@@ -61,7 +61,6 @@
         border: 1px solid #2a2a2a;
     }
 
-    /* ====== АДМИН-ПАНЕЛЬ ====== */
     #deepchat-root .dc-admin-panel {
         display: none;
         background: #0a0a0a;
@@ -86,10 +85,7 @@
         font-size: 0.7rem;
         cursor: pointer;
     }
-    #deepchat-root .dc-admin-panel button:hover {
-        border-color: #1877f2;
-        color: #fff;
-    }
+    #deepchat-root .dc-admin-panel button:hover { border-color: #1877f2; color: #fff; }
     #deepchat-root .dc-admin-panel .dc-admin-exit {
         border-color: #ff4444;
         color: #ff4444;
@@ -99,7 +95,6 @@
         background: rgba(255,68,68,0.1);
     }
 
-    /* ====== ЛЕНТА ====== */
     #deepchat-root .dc-feed {
         padding: 12px 14px;
         display: flex;
@@ -113,7 +108,6 @@
         text-align: center; color: #444; font-size: 1rem; margin-top: 60px;
     }
 
-    /* ====== КАРТОЧКА ПОСТА ====== */
     #deepchat-root .dc-post {
         background: #141414;
         border-radius: 20px;
@@ -216,9 +210,11 @@
         border-radius: 8px;
     }
     #deepchat-root .dc-post .dc-post-content .dc-html-content iframe {
-        max-width: 100%;
+        width: 100%;
+        min-height: 300px;
+        border: none;
         border-radius: 8px;
-        min-height: 200px;
+        background: #0a0a0a;
     }
     #deepchat-root .dc-post .dc-post-content .dc-html-content .dc-marquee {
         background: #1a1a2e;
@@ -238,74 +234,120 @@
         100% { transform: translateX(-100%); }
     }
 
-    /* ====== ПРЕВЬЮ ССЫЛКИ ====== */
-    #deepchat-root .dc-link-preview {
-        background: #0a0a0a;
+    /* ====== ФРЕЙМ ДЛЯ ССЫЛОК (ПРЯМО В КОММЕНТАРИЯХ) ====== */
+    #deepchat-root .dc-link-frame {
+        display: block;
+        width: 100%;
+        min-height: 300px;
+        max-height: 500px;
         border: 1px solid #2a2a2a;
         border-radius: 12px;
+        background: #0a0a0a;
+        margin: 6px 0;
         overflow: hidden;
-        margin: 8px 0;
-        cursor: pointer;
-        transition: all 0.2s;
+        position: relative;
     }
-    #deepchat-root .dc-link-preview:hover {
-        border-color: #1877f2;
-        box-shadow: 0 0 20px rgba(24,119,242,0.1);
-    }
-    #deepchat-root .dc-link-preview .dc-lp-img {
+    #deepchat-root .dc-link-frame iframe {
         width: 100%;
-        max-height: 200px;
-        object-fit: cover;
-        background: #1a1a1a;
-    }
-    #deepchat-root .dc-link-preview .dc-lp-body {
-        padding: 10px 14px;
-    }
-    #deepchat-root .dc-link-preview .dc-lp-title {
-        font-weight: 700;
-        font-size: 0.9rem;
-        color: #fff;
-        margin-bottom: 2px;
-    }
-    #deepchat-root .dc-link-preview .dc-lp-desc {
-        font-size: 0.75rem;
-        color: #888;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    #deepchat-root .dc-link-preview .dc-lp-url {
-        font-size: 0.6rem;
-        color: #555;
-        margin-top: 4px;
-    }
-    #deepchat-root .dc-link-preview .dc-lp-open {
-        display: none;
-        margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px solid #1a1a1a;
-    }
-    #deepchat-root .dc-link-preview .dc-lp-open iframe {
-        width: 100%;
-        height: 400px;
+        height: 100%;
+        min-height: 300px;
+        max-height: 500px;
         border: none;
-        border-radius: 8px;
         background: #0a0a0a;
     }
-    #deepchat-root .dc-link-preview .dc-lp-open.show { display: block; }
-    #deepchat-root .dc-link-preview .dc-lp-toggle {
+    #deepchat-root .dc-link-frame .dc-frame-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px;
+        background: #1a1a1a;
+        border-bottom: 1px solid #2a2a2a;
+        font-size: 0.65rem;
+        color: #888;
+    }
+    #deepchat-root .dc-link-frame .dc-frame-header .dc-frame-url {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #1877f2;
+    }
+    #deepchat-root .dc-link-frame .dc-frame-header .dc-frame-open {
         background: none;
         border: none;
         color: #1877f2;
-        font-size: 0.7rem;
         cursor: pointer;
-        padding: 4px 0;
+        font-size: 0.7rem;
+        padding: 2px 10px;
+        border-radius: 40px;
         font-weight: 600;
+        text-decoration: none;
     }
-    #deepchat-root .dc-link-preview .dc-lp-toggle:hover { text-decoration: underline; }
+    #deepchat-root .dc-link-frame .dc-frame-header .dc-frame-open:hover {
+        background: rgba(24,119,242,0.1);
+    }
 
-    /* ====== КОММЕНТАРИИ ====== */
+    #deepchat-root .dc-post .dc-post-stats {
+        display: flex;
+        gap: 16px;
+        font-size: 0.7rem;
+        color: #666;
+        margin: 6px 0;
+    }
+    #deepchat-root .dc-post .dc-post-stats span { display: flex; align-items: center; gap: 4px; }
+
+    #deepchat-root .dc-post .dc-post-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+    }
+    #deepchat-root .dc-post .dc-post-buttons button {
+        padding: 4px 14px;
+        border-radius: 40px;
+        border: none;
+        font-size: 0.7rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-like {
+        background: #1a1a1a;
+        color: #ff6b6b;
+        border: 1px solid #2a2a2a;
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-like:hover {
+        border-color: #ff6b6b;
+        background: rgba(255,107,107,0.1);
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-comment {
+        background: #1a1a1a;
+        color: #4a9eff;
+        border: 1px solid #2a2a2a;
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-comment:hover {
+        border-color: #4a9eff;
+        background: rgba(74,158,255,0.1);
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-repost {
+        background: #1a1a1a;
+        color: #ffcc66;
+        border: 1px solid #2a2a2a;
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-repost:hover {
+        border-color: #ffcc66;
+        background: rgba(255,204,102,0.1);
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-html {
+        background: #1a1a1a;
+        color: #00ff88;
+        border: 1px solid #2a2a2a;
+    }
+    #deepchat-root .dc-post .dc-post-buttons .dc-btn-html:hover {
+        border-color: #00ff88;
+        background: rgba(0,255,136,0.1);
+    }
+
     #deepchat-root .dc-post .dc-comments {
         margin-top: 10px;
         padding-top: 10px;
@@ -405,7 +447,6 @@
         cursor: pointer;
     }
 
-    /* ====== МОДАЛКИ ====== */
     #deepchat-root .dc-modal {
         display: none;
         position: fixed;
@@ -468,7 +509,6 @@
     }
     #deepchat-root .dc-modal .dc-modal-box .dc-btns .dc-save:hover { background: #4a9eff; }
 
-    /* ====== ПРОФИЛЬ ====== */
     #deepchat-root .dc-profile-modal .dc-profile-info {
         display: flex;
         align-items: center;
@@ -499,7 +539,6 @@
         color: #666;
     }
 
-    /* ====== ТОСТ ====== */
     #deepchat-root .dc-toast {
         position: fixed;
         bottom: 100px;
@@ -528,7 +567,8 @@
         #deepchat-root .dc-header .dc-title { font-size: 1.1rem; }
         #deepchat-root .dc-post { padding: 12px 14px; }
         #deepchat-root .dc-post .dc-post-title { font-size: 1rem; }
-        #deepchat-root .dc-link-preview .dc-lp-open iframe { height: 250px; }
+        #deepchat-root .dc-link-frame { min-height: 200px; max-height: 350px; }
+        #deepchat-root .dc-link-frame iframe { min-height: 200px; max-height: 350px; }
     }
 </style>
 
@@ -574,7 +614,6 @@ let DC_EDITING_COMMENT = null;
 
     root.innerHTML = `
         <div id="dc-app">
-            <!-- ШАПКА -->
             <div class="dc-header">
                 <div class="dc-title">
                     💬 <span id="dcSiteName">${DC_SITE_NAME}</span>
@@ -586,7 +625,6 @@ let DC_EDITING_COMMENT = null;
                 </div>
             </div>
 
-            <!-- АДМИН-ПАНЕЛЬ -->
             <div class="dc-admin-panel" id="dcAdminPanel">
                 <span class="dc-admin-label">🏴‍☠️ АДМИН</span>
                 <button onclick="dcAdminLikeAll(1)">❤️ +1 всем</button>
@@ -596,14 +634,12 @@ let DC_EDITING_COMMENT = null;
                 <button class="dc-admin-exit" onclick="dcAdminLogout()">🚪 Выйти из админки</button>
             </div>
 
-            <!-- ЛЕНТА -->
             <div class="dc-feed" id="dcFeed">
                 <div class="dc-empty">💬 Нет постов. Создайте первый!</div>
             </div>
         </div>
         <div class="dc-toast" id="dcToast"></div>
 
-        <!-- МОДАЛКА НОВОГО/РЕДАКТИРОВАНИЯ ПОСТА -->
         <div class="dc-modal" id="dcPostModal">
             <div class="dc-modal-box">
                 <h3 id="dcPostModalTitle">📝 Новый пост</h3>
@@ -615,7 +651,7 @@ let DC_EDITING_COMMENT = null;
                     <button onclick="dcInsertHTML('image')" style="background:#1a1a1a; border:1px solid #2a2a2a; color:#aaa; padding:4px 12px; border-radius:40px; font-size:0.7rem; cursor:pointer;">🖼️ Картинка</button>
                     <button onclick="dcInsertHTML('video')" style="background:#1a1a1a; border:1px solid #2a2a2a; color:#aaa; padding:4px 12px; border-radius:40px; font-size:0.7rem; cursor:pointer;">🎬 Видео</button>
                     <button onclick="dcInsertHTML('youtube')" style="background:#1a1a1a; border:1px solid #2a2a2a; color:#aaa; padding:4px 12px; border-radius:40px; font-size:0.7rem; cursor:pointer;">▶️ YouTube</button>
-                    <button onclick="dcInsertHTML('link')" style="background:#1a1a1a; border:1px solid #2a2a2a; color:#00ff88; padding:4px 12px; border-radius:40px; font-size:0.7rem; cursor:pointer;">🔗 Ссылка</button>
+                    <button onclick="dcInsertHTML('link')" style="background:#1a1a1a; border:1px solid #2a2a2a; color:#00ff88; padding:4px 12px; border-radius:40px; font-size:0.7rem; cursor:pointer;">🔗 Ссылка (фрейм)</button>
                 </div>
                 <div class="dc-btns">
                     <button class="dc-cancel" onclick="dcClosePostModal()">Отмена</button>
@@ -624,7 +660,6 @@ let DC_EDITING_COMMENT = null;
             </div>
         </div>
 
-        <!-- МОДАЛКА РЕДАКТИРОВАНИЯ КОММЕНТАРИЯ -->
         <div class="dc-modal" id="dcCommentModal">
             <div class="dc-modal-box">
                 <h3>✏️ Редактировать комментарий</h3>
@@ -637,7 +672,6 @@ let DC_EDITING_COMMENT = null;
             </div>
         </div>
 
-        <!-- МОДАЛКА ПРОФИЛЯ -->
         <div class="dc-modal dc-profile-modal" id="dcProfileModal">
             <div class="dc-modal-box">
                 <h3>👤 Профиль</h3>
@@ -655,7 +689,6 @@ let DC_EDITING_COMMENT = null;
             </div>
         </div>
 
-        <!-- МОДАЛКА АДМИНКИ -->
         <div class="dc-modal" id="dcAdminModal">
             <div class="dc-modal-box">
                 <h3>⚙️ Админ-вход</h3>
@@ -727,6 +760,50 @@ function dcLoginUser() {
 }
 
 // ================================================================
+// ======  ГЕНЕРАЦИЯ ФРЕЙМА ДЛЯ ССЫЛКИ ======
+// ================================================================
+
+function dcGenerateLinkFrame(url) {
+    // Экранируем URL для безопасной вставки
+    const safeUrl = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    const domain = new URL(url).hostname;
+    
+    return `
+        <div class="dc-link-frame">
+            <div class="dc-frame-header">
+                <span class="dc-frame-url">🔗 ${domain}</span>
+                <a class="dc-frame-open" href="${safeUrl}" target="_blank" rel="noopener noreferrer">↗ Открыть</a>
+            </div>
+            <iframe src="${safeUrl}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        </div>
+    `;
+}
+
+// ================================================================
+// ======  ОБРАБОТКА ТЕКСТА (ССЫЛКИ → ФРЕЙМЫ) ======
+// ================================================================
+
+function dcProcessTextWithFrames(text) {
+    if (!text) return '';
+    
+    // Находим все ссылки в тексте
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const matches = text.match(urlRegex);
+    
+    if (!matches) return text;
+    
+    let result = text;
+    matches.forEach(url => {
+        // Создаём фрейм для каждой ссылки
+        const frameHtml = dcGenerateLinkFrame(url);
+        // Заменяем ссылку на фрейм
+        result = result.replace(url, frameHtml);
+    });
+    
+    return result;
+}
+
+// ================================================================
 // ======  ВСТАВКА HTML  ======
 // ================================================================
 function dcInsertHTML(type) {
@@ -754,72 +831,12 @@ function dcInsertHTML(type) {
         case 'link':
             const linkUrl = prompt('Введите URL ссылки:');
             if (!linkUrl) return;
-            html = dcGenerateLinkPreview(linkUrl);
+            html = dcGenerateLinkFrame(linkUrl);
             break;
         default: return;
     }
     textarea.value += '\n[html]' + html + '[/html]\n';
     textarea.focus();
-}
-
-// ================================================================
-// ======  ГЕНЕРАЦИЯ ПРЕВЬЮ ССЫЛКИ  ======
-// ================================================================
-function dcGenerateLinkPreview(url) {
-    // Пытаемся получить метаданные через прокси
-    // Для демонстрации используем встроенные данные
-    const domain = new URL(url).hostname;
-    const previewData = {
-        title: domain,
-        description: 'Нажмите, чтобы открыть сайт',
-        image: '',
-        url: url
-    };
-
-    // Пробуем получить данные через fetch
-    try {
-        fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url))
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const ogTitle = doc.querySelector('meta[property="og:title"]');
-                const ogDesc = doc.querySelector('meta[property="og:description"]');
-                const ogImage = doc.querySelector('meta[property="og:image"]');
-                if (ogTitle) previewData.title = ogTitle.getAttribute('content');
-                if (ogDesc) previewData.description = ogDesc.getAttribute('content');
-                if (ogImage) previewData.image = ogImage.getAttribute('content');
-            })
-            .catch(() => {});
-    } catch(e) {}
-
-    return dcBuildPreviewHTML(previewData);
-}
-
-function dcBuildPreviewHTML(data) {
-    return `
-        <div class="dc-link-preview" onclick="dcTogglePreview(this)">
-            ${data.image ? `<img class="dc-lp-img" src="${data.image}" alt="Превью">` : ''}
-            <div class="dc-lp-body">
-                <div class="dc-lp-title">${data.title}</div>
-                <div class="dc-lp-desc">${data.description}</div>
-                <div class="dc-lp-url">🔗 ${data.url}</div>
-                <button class="dc-lp-toggle">📂 Открыть фрейм</button>
-                <div class="dc-lp-open">
-                    <iframe src="${data.url}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function dcTogglePreview(el) {
-    const openDiv = el.querySelector('.dc-lp-open');
-    const toggleBtn = el.querySelector('.dc-lp-toggle');
-    if (openDiv) {
-        openDiv.classList.toggle('show');
-        toggleBtn.textContent = openDiv.classList.contains('show') ? '🔒 Закрыть фрейм' : '📂 Открыть фрейм';
-    }
 }
 
 // ================================================================
@@ -856,7 +873,6 @@ function dcSavePost() {
     let content = DC.postContent.value.trim();
     if (!title && !content) { dcShowToast('⚠️ Заполните заголовок или текст'); return; }
 
-    // Обработка HTML
     if (content.includes('[html]') && content.includes('[/html]')) {
         const parts = content.split(/\[html\]|\[\/html\]/);
         let finalHtml = '';
@@ -882,17 +898,11 @@ function dcSavePost() {
 
     if (DC_EDITING_POST) {
         DC_DB.ref(DC_PATH + '/posts/' + DC_EDITING_POST).update(post)
-            .then(() => {
-                dcClosePostModal();
-                dcShowToast('✅ Пост обновлён!');
-            })
+            .then(() => { dcClosePostModal(); dcShowToast('✅ Пост обновлён!'); })
             .catch(err => dcShowToast('❌ ' + err.message));
     } else {
         DC_DB.ref(DC_PATH + '/posts').push(post)
-            .then(() => {
-                dcClosePostModal();
-                dcShowToast('✅ Пост опубликован!');
-            })
+            .then(() => { dcClosePostModal(); dcShowToast('✅ Пост опубликован!'); })
             .catch(err => dcShowToast('❌ ' + err.message));
     }
 }
@@ -909,12 +919,15 @@ function dcDeletePost(postId) {
 // ================================================================
 function dcAddComment(postId) {
     const input = document.getElementById('dc-comment-input-' + postId);
-    const text = input.value.trim();
+    let text = input.value.trim();
     if (!text) { dcShowToast('⚠️ Напишите комментарий'); return; }
+
+    // Обрабатываем ссылки в комментарии (превращаем в фреймы)
+    const processedText = dcProcessTextWithFrames(text);
 
     const comment = {
         author: DC_USER,
-        text: text,
+        text: processedText,
         timestamp: Date.now(),
         likes: 0
     };
@@ -942,10 +955,12 @@ function dcOpenEditComment(postId, commentId) {
 
 function dcSaveComment() {
     if (!DC_EDITING_COMMENT) return;
-    const text = DC.commentEditInput.value.trim();
+    let text = DC.commentEditInput.value.trim();
     if (!text) { dcShowToast('⚠️ Напишите текст'); return; }
+    
+    const processedText = dcProcessTextWithFrames(text);
     const { postId, commentId } = DC_EDITING_COMMENT;
-    DC_DB.ref(DC_PATH + '/posts/' + postId + '/comments/' + commentId).update({ text: text })
+    DC_DB.ref(DC_PATH + '/posts/' + postId + '/comments/' + commentId).update({ text: processedText })
         .then(() => {
             dcCloseCommentModal();
             dcShowToast('✅ Комментарий обновлён!');
@@ -1108,6 +1123,34 @@ document.addEventListener('click', function(e) {
 });
 
 // ================================================================
+// ======  РЕНДЕР КОММЕНТАРИЯ  ======
+// ================================================================
+function dcRenderComment(postId, commentId, cm) {
+    const isCmOwn = (cm.author === DC_USER);
+    const canCmEdit = isCmOwn || DC_IS_ADMIN;
+    const canCmDelete = DC_IS_ADMIN || isCmOwn;
+    let cmImgHtml = '';
+    if (cm.img) {
+        cmImgHtml = `<img class="dc-cimg" src="${cm.img}" onclick="window.open(this.src)">`;
+    }
+    
+    return `
+        <div class="dc-comment">
+            <div class="dc-cname" onclick="dcOpenProfile('${cm.author}')">${cm.author}</div>
+            <div class="dc-ctext">${cm.text || ''}</div>
+            ${cmImgHtml}
+            <div class="dc-ctime">${new Date(cm.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+            <div class="dc-c-actions">
+                <button class="dc-clike" onclick="dcLikeComment('${postId}','${commentId}',1)">❤️ ${cm.likes || 0}</button>
+                ${DC_IS_ADMIN ? `<button class="dc-clike" onclick="dcLikeComment('${postId}','${commentId}',10)">+10</button>` : ''}
+                ${canCmEdit ? `<button class="dc-cedit" onclick="dcOpenEditComment('${postId}','${commentId}')">✏️</button>` : ''}
+                ${canCmDelete ? `<button class="dc-cdel" onclick="dcDeleteComment('${postId}','${commentId}')">🗑</button>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+// ================================================================
 // ======  ЗАГРУЗКА ПОСТОВ  ======
 // ================================================================
 function dcLoadPosts() {
@@ -1131,31 +1174,10 @@ function dcLoadPosts() {
             const commentKeys = Object.keys(comments);
             const commentCount = commentKeys.length;
 
-            // Комментарии
             let commentsHtml = '';
             commentKeys.forEach(ck => {
                 const cm = comments[ck];
-                const isCmOwn = (cm.author === DC_USER);
-                const canCmEdit = isCmOwn || DC_IS_ADMIN;
-                const canCmDelete = DC_IS_ADMIN || isCmOwn;
-                let cmImgHtml = '';
-                if (cm.img) {
-                    cmImgHtml = `<img class="dc-cimg" src="${cm.img}" onclick="window.open(this.src)">`;
-                }
-                commentsHtml += `
-                    <div class="dc-comment">
-                        <div class="dc-cname" onclick="dcOpenProfile('${cm.author}')">${cm.author}</div>
-                        <div class="dc-ctext">${cm.text}</div>
-                        ${cmImgHtml}
-                        <div class="dc-ctime">${new Date(cm.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
-                        <div class="dc-c-actions">
-                            <button class="dc-clike" onclick="dcLikeComment('${key}','${ck}',1)">❤️ ${cm.likes || 0}</button>
-                            ${DC_IS_ADMIN ? `<button class="dc-clike" onclick="dcLikeComment('${key}','${ck}',10)">+10</button>` : ''}
-                            ${canCmEdit ? `<button class="dc-cedit" onclick="dcOpenEditComment('${key}','${ck}')">✏️</button>` : ''}
-                            ${canCmDelete ? `<button class="dc-cdel" onclick="dcDeleteComment('${key}','${ck}')">🗑</button>` : ''}
-                        </div>
-                    </div>
-                `;
+                commentsHtml += dcRenderComment(key, ck, cm);
             });
 
             html += `
@@ -1302,11 +1324,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     dcLoadPosts();
 
-    console.log('💬 DeepSocial 6.0 загружен!');
+    console.log('💬 DeepSocial 7.0 — Фреймы по ссылкам!');
     console.log('🏷️ Сайт:', DC_SITE_ID);
     console.log('👤 Пользователь:', DC_USER || 'не выбран');
     console.log('🏴‍☠️ Админ-пароль: 12345');
-    console.log('📌 Новое: превью ссылок и фреймы!');
+    console.log('📌 Ссылки в комментариях превращаются в полноценные фреймы!');
 });
 </script>
 <!-- ============================================================ -->
