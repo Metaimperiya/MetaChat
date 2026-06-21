@@ -1,5 +1,5 @@
 <!-- ============================================================ -->
-<!-- ======  DEEPCHAT — УНИВЕРСАЛЬНЫЙ ЧАТ ДЛЯ ЛЮБОГО САЙТА ====== -->
+<!-- ======  DEEPCHAT — УНИВЕРСАЛЬНЫЙ ЧАТ С АДМИН-ЛАЙКАМИ ====== -->
 <!-- ======  ВСТАВЬ ЭТОТ КОД НА ЛЮБОЙ САЙТ ====== -->
 <!-- ============================================================ -->
 
@@ -130,6 +130,40 @@
         margin: 4px 0; cursor: pointer;
     }
 
+    /* ====== БЛОК ЛАЙКОВ (ВИДЕН ТОЛЬКО АДМИНУ) ====== */
+    #deepchat-root .dc-msg .dc-like-buttons {
+        display: none;
+        gap: 4px;
+        margin-top: 6px;
+        flex-wrap: wrap;
+    }
+    #deepchat-root .dc-msg .dc-like-buttons.dc-show {
+        display: flex;
+    }
+    #deepchat-root .dc-msg .dc-like-buttons button {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        color: #ff6b6b;
+        padding: 2px 10px;
+        border-radius: 40px;
+        font-size: 0.65rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    #deepchat-root .dc-msg .dc-like-buttons button:hover {
+        border-color: #ff6b6b;
+        background: rgba(255,107,107,0.1);
+    }
+    #deepchat-root .dc-msg .dc-like-buttons .dc-likes-count {
+        background: #1a1a1a;
+        padding: 2px 12px;
+        border-radius: 40px;
+        font-size: 0.65rem;
+        color: #ff6b6b;
+        border: 1px solid #2a2a2a;
+    }
+
     #deepchat-root .dc-input {
         padding: 8px 12px;
         border-top: 1px solid #2a2a2a;
@@ -242,10 +276,6 @@
         background: #1877f2; color: #fff;
     }
     #deepchat-root .dc-modal .dc-modal-box .dc-btns .dc-save:hover { background: #4a9eff; }
-    #deepchat-root .dc-modal .dc-modal-box .dc-btns .dc-danger {
-        background: #ff4444; color: #fff;
-    }
-    #deepchat-root .dc-modal .dc-modal-box .dc-btns .dc-danger:hover { background: #ff6666; }
 
     #deepchat-root .dc-toast {
         position: fixed;
@@ -506,7 +536,6 @@ function dcCreateRoom() {
 }
 
 function dcDeleteRoom(roomId) {
-    // Проверяем: админ или создатель комнаты
     DC_DB.ref(DC_PATH + '/rooms/' + roomId + '/creator').once('value', (snap) => {
         const creator = snap.val();
         if (!DC_IS_ADMIN && creator !== DC_USER) {
@@ -552,12 +581,29 @@ function dcJoinRoom(roomId) {
             if (msg.img) {
                 imgHtml = `<img class="dc-img" src="${msg.img}" onclick="window.open(this.src)">`;
             }
+
+            // ====== ЛАЙКИ ТОЛЬКО ДЛЯ АДМИНА ======
+            const likes = msg.likes || 0;
+            const likeButtons = DC_IS_ADMIN ? `
+                <div class="dc-like-buttons dc-show">
+                    <span class="dc-likes-count">❤️ ${likes}</span>
+                    <button onclick="dcLikeMessage('${key}', 1)">+1</button>
+                    <button onclick="dcLikeMessage('${key}', 10)">+10</button>
+                    <button onclick="dcLikeMessage('${key}', 100)">+100</button>
+                </div>
+            ` : `
+                <div class="dc-like-buttons">
+                    <span class="dc-likes-count">❤️ ${likes}</span>
+                </div>
+            `;
+
             html += `
                 <div class="dc-msg ${isOwn ? 'dc-own' : ''}">
                     <div class="dc-name">${msg.author}</div>
                     <div>${msg.text}</div>
                     ${imgHtml}
                     <div class="dc-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+                    ${likeButtons}
                 </div>
             `;
         });
@@ -566,6 +612,24 @@ function dcJoinRoom(roomId) {
     });
 
     dcLoadRooms();
+}
+
+// ================================================================
+// ======  ЛАЙКИ (ТОЛЬКО ДЛЯ АДМИНА) ======
+// ================================================================
+function dcLikeMessage(msgId, amount) {
+    if (!DC_IS_ADMIN) {
+        dcShowToast('⛔ Только админ может ставить лайки!');
+        return;
+    }
+    const ref = DC_DB.ref(DC_PATH + '/messages/' + DC_CURRENT_ROOM + '/' + msgId);
+    ref.transaction((current) => {
+        if (current) {
+            current.likes = (current.likes || 0) + amount;
+        }
+        return current;
+    });
+    dcShowToast('🔥 +' + amount + ' лайков!');
 }
 
 // ================================================================
@@ -579,7 +643,8 @@ function dcSendMessage() {
     const data = {
         author: DC_USER,
         text: text || '📸 Фото',
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        likes: 0
     };
     if (DC_IMAGE) data.img = DC_IMAGE;
 
@@ -630,6 +695,10 @@ function dcAdminLogin() {
         DC.chatNameInput.value = DC_CHAT_NAME;
         dcShowToast('🏴‍☠️ Админ-режим включён!');
         dcLoadRooms();
+        // Обновляем сообщения, чтобы показать кнопки лайков
+        if (DC_CURRENT_ROOM) {
+            dcJoinRoom(DC_CURRENT_ROOM);
+        }
     } else {
         dcShowToast('❌ Неверный пароль!');
         DC.adminPass.value = '';
@@ -643,6 +712,9 @@ function dcAdminLogout() {
     DC.adminContent.style.display = 'none';
     dcShowToast('🔒 Вы вышли из админки');
     dcLoadRooms();
+    if (DC_CURRENT_ROOM) {
+        dcJoinRoom(DC_CURRENT_ROOM);
+    }
 }
 
 function dcSaveChatName() {
@@ -704,7 +776,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('📛 Название чата:', DC_CHAT_NAME);
     console.log('👤 Пользователь:', DC_USER || 'не выбран');
     console.log('🏴‍☠️ Админ-пароль: 12345');
-    console.log('📌 Комнаты могут удалять: админ И создатель комнаты');
+    console.log('📌 Только админ может ставить лайки!');
+    console.log('📌 Кнопки лайков видны только когда админ залогинен');
 });
 </script>
 
